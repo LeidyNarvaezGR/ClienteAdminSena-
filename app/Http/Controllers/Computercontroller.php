@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Http;
 
@@ -29,5 +30,42 @@ class ComputerController extends Controller
         $computer = $this->fetchDataFromApi($url . '/computers/' . $id);
 
         return view('computers.show', compact('computer'));
+    }
+
+    public function create()
+    {
+        return view('computers.create');
+    }
+
+     public function store(Request $request)
+    {
+        $url = env('URL_SERVER_API');
+
+        Http::post($url . '/computers', $request->only('number','brand'));
+
+        return redirect()->route('computers.index');
+    }
+
+    public function edit($id)
+    {
+        $url = env('URL_SERVER_API');
+        $computer = $this->fetchDataFromApi($url . '/computers/' . $id);
+        return view('computers.edit', compact('computer'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $url = env('URL_SERVER_API');
+
+        Http::put($url . '/computers/' . $id, $request->only('number','brand'));
+
+        return redirect()->route('computers.index');
+    }
+
+      public function destroy($id)
+    {
+        $url = env('URL_SERVER_API');
+        Http::delete($url . '/computers/' . $id);
+        return redirect()->route('computers.index');
     }
 }

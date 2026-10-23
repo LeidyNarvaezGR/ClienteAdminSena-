@@ -1,3 +1,4 @@
+
 <div class="container my-5">
     <h2 class="mb-4 text-success">Detalles de Computer</h2>
 
@@ -11,6 +12,9 @@
                     
                 </thead>
             <tbody>
+                
+
+
                 <tr>
                     <td>{{ $computer['id'] }}</td>
                     <td>{{ $computer['number'] }}</td>
