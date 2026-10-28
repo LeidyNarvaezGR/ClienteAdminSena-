@@ -1,47 +1,54 @@
-@extends('layouts.app')
+<tbody>
 
-@section('content')
-<div class="container mt-4">
-    <h1>Lista de áreas</h1>
+    <div>
+        <a href="{{ route('area.create') }}" class="btn btn-outline-success btn-sm">
+            Nueva area
+        </a>
+        <br><br>
+    </div>
 
-    <a href="{{ route('area.create') }}" class="btn btn-success mb-3">
-        Nueva área
-    </a>
+    @forelse($areas ?? [] as $area)
 
-    <table class="table table-bordered table-striped">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Nombre</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($areas as $area)
-                <tr>
-                    <td>{{ $area['id'] }}</td>
-                    <td>{{ $area['name'] }}</td>
-                    <td>
-                        <a href="{{ route('area.show', $area['id']) }}"
-                           class="btn btn-info btn-sm">Ver más</a>
+        <tr>
+            <td>{{ $area['id'] }}</td>
+            <td>{{ $area['name'] }}</td>
+            <td>
+                <img src="{{ $area['imagen_url'] }}" alt="{{ $area['name'] }}" width="100">
+            </td>
+            <td>
+                <a href="{{ route('area.show', $area['id']) }}" class="btn btn-info btn-sm">
+                    Ver más
+                </a>
+            </td>
+            <td>
+                <a href="{{ route('area.edit', $area['id']) }}" class="btn btn-warning btn-sm">
+                    Editar
+                </a>
+            </td>
+            <td>
+                <form action="{{ route('area.destroy', $area['id']) }}"
+                      method="POST"
+                      style="display: inline-block;"
+                      onsubmit="return confirm('¿Estás seguro de eliminar esta area?')">
 
-                        <a href="{{ route('area.edit', $area['id']) }}"
-                           class="btn btn-warning btn-sm">Editar</a>
+                    @csrf
+                    @method('DELETE')
 
-                        <form action="{{ route('area.destroy', $area['id']) }}"
-                              method="POST" style="display:inline">
-                            @csrf
-                            @method('DELETE')
+                    <button type="submit" class="btn btn-danger btn-sm">
+                        Eliminar
+                    </button>
+                </form>
+            </td>
+        </tr>
 
-                            <button type="submit" class="btn btn-danger btn-sm"
-                                onclick="return confirm('¿Deseas eliminar esta área?')">
-                                Eliminar
-                            </button>
-                        </form>
-                    </td>
-                </tr>
-            @endforeach
-        </tbody>
-    </table>
-</div>
-@endsection
+    @empty
+
+        <tr>
+            <td colspan="6" class="text-center">
+                No hay áreas registradas
+            </td>
+        </tr>
+
+    @endforelse
+
+</tbody>
